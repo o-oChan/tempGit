@@ -1,0 +1,21 @@
+  // (1)번 위치에 그대로 넣으세요
+        if (FD_ISSET(STDIN_FILENO, &readfds)) {
+            if (fgets(buffer, BUFFER_SIZE, stdin) != NULL) {
+                buffer[strcspn(buffer, "\n")] = '\0'; // Remove newline character
+                if (strcmp(buffer, "\\quit") == 0) {
+                    if (send(sock, "\\quit\n", strlen("\\quit\n"), 0) == -1) {
+                        perror("send");
+                    }
+                    printf("gg~\n");
+                    break;
+                }
+                if (strlen(buffer) > 0) {
+                    if (send(sock, buffer, strlen(buffer), 0) == -1) {
+                        perror("send");
+                    }
+                    if (send(sock, "\n", 1, 0) == -1) {
+                        perror("send");
+                    }
+                }
+            }
+        }
